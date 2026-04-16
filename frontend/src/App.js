@@ -1,5 +1,5 @@
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { Sidebar } from "@/components/Sidebar";
 import HomePage from "@/pages/HomePage";
@@ -12,7 +12,7 @@ import DashboardPage from "@/pages/DashboardPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="min-h-screen bg-background">
         <Sidebar />
         <main className="page-container">
@@ -28,7 +28,7 @@ function App() {
         </main>
         <Toaster position="top-right" richColors />
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
