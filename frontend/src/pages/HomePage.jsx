@@ -32,7 +32,7 @@ export default function HomePage() {
           Bienvenido
         </h1>
         <p className="text-muted-foreground mt-2 text-base">
-          Panel de control de tu polleria. Accede rapidamente a cada modulo.
+          Panel de control de TIOS PIOS. Accede rapidamente a cada modulo.
         </p>
       </div>
 

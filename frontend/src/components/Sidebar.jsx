@@ -48,7 +48,7 @@ export function Sidebar() {
         <div className="flex flex-col h-full">
           <div className="p-6 border-b border-border">
             <h1 className="font-heading text-xl font-bold text-primary tracking-tight">
-              Mi Polleria
+              TIOS PIOS
             </h1>
             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-[0.2em]">
               Sistema de Gestion
@@ -79,8 +79,8 @@ export function Sidebar() {
           </nav>
 
           <div className="p-4 border-t border-border">
-            <p className="text-[10px] text-muted-foreground text-center uppercase tracking-[0.15em]">
-              v1.0 — Polleria
+            <p className="text-[10px] text-muted-foreground text-center tracking-[0.1em]">
+              Desarrollado por <span className="font-medium">Emay Tech</span>
             </p>
           </div>
         </div>
