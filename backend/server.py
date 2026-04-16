@@ -413,7 +413,7 @@ async def get_dashboard_summary():
         {"$sort": {"created_at": -1}},
         {"$group": {"_id": "$raw_material_id", "prices": {"$push": "$unit_price"}}},
         {"$project": {"raw_material_id": "$_id", "last_two": {"$slice": ["$prices", 2]}, "_id": 0}}
-    ]).to_list(None)
+    ]).to_list(1000)
     price_map = {p["raw_material_id"]: p["last_two"] for p in price_agg}
     mat_name_map = {m["id"]: m["name"] for m in raw_materials}
     for mat_id, prices in price_map.items():
