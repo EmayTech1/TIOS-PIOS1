@@ -407,18 +407,22 @@ async def get_dashboard_summary():
         prod_count[n] = prod_count.get(n, 0) + p.get("quantity", 0)
     most_produced = sorted(prod_count.items(), key=lambda x: x[1], reverse=True)[:5]
 
-    # Price variations
+    # Price variations (single aggregation instead of N+1 queries)
     price_vars = []
-    for mat in raw_materials:
-        hist = await db.purchases.find(
-            {"raw_material_id": mat["id"]}, {"_id": 0, "unit_price": 1}
-        ).sort("created_at", -1).limit(2).to_list(2)
-        if len(hist) >= 2:
-            cur, prev = hist[0]["unit_price"], hist[1]["unit_price"]
+    price_agg = await db.purchases.aggregate([
+        {"$sort": {"created_at": -1}},
+        {"$group": {"_id": "$raw_material_id", "prices": {"$push": "$unit_price"}}},
+        {"$project": {"raw_material_id": "$_id", "last_two": {"$slice": ["$prices", 2]}, "_id": 0}}
+    ]).to_list(None)
+    price_map = {p["raw_material_id"]: p["last_two"] for p in price_agg}
+    mat_name_map = {m["id"]: m["name"] for m in raw_materials}
+    for mat_id, prices in price_map.items():
+        if len(prices) >= 2:
+            cur, prev = prices[0], prices[1]
             if prev > 0:
                 pct = ((cur - prev) / prev) * 100
                 if abs(pct) > 3:
-                    price_vars.append({"product": mat["name"], "current": cur, "previous": prev, "pct": round(pct, 1)})
+                    price_vars.append({"product": mat_name_map.get(mat_id, ""), "current": cur, "previous": prev, "pct": round(pct, 1)})
 
     # Waste by product
     waste_by = {}
